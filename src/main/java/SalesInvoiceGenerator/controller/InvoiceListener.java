@@ -26,7 +26,7 @@ import SalesInvoiceGenerator.model.*;
 import SalesInvoiceGenerator.view.*;
 /**
  *
- * @author mokhalid
+ * @author saad
  */
 public class InvoiceListener implements ActionListener , ListSelectionListener{
     private SalesInvoiceForm frame;
