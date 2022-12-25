@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 /**
  *
- * @author mokhalid
+ * @author saad
  */
 public class SalesInvoiceForm extends javax.swing.JFrame {
 
