@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author mokhalid
+ * @author saad
  */
 public class HeaderDialog extends JDialog {
     private JTextField customerNameText;
