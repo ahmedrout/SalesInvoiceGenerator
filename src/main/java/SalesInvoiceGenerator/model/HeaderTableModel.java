@@ -10,7 +10,7 @@ import SalesInvoiceGenerator.view.*;
 
 /**
  *
- * @author mokhalid
+ * @author saad
  */
 public class HeaderTableModel extends AbstractTableModel{
     private String[] coloumns = {"InvoiceNum", "CustomerName", "InvoiceDate", "Total"}; 
