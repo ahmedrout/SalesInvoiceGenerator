@@ -9,7 +9,7 @@ import java.util.Date;
 import SalesInvoiceGenerator.view.*;
 /**
  *
- * @author saad
+ * @author mokhalid
  */
 public class InvoiceHeader {
      private int invoiceNum;

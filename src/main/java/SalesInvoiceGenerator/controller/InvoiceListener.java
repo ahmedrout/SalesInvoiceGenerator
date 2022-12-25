@@ -26,7 +26,7 @@ import SalesInvoiceGenerator.model.*;
 import SalesInvoiceGenerator.view.*;
 /**
  *
- * @author saad
+ * @author mokhalid
  */
 public class InvoiceListener implements ActionListener , ListSelectionListener{
     private SalesInvoiceForm frame;
@@ -40,7 +40,8 @@ public class InvoiceListener implements ActionListener , ListSelectionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("ActionListener");
-
+        FileOperations fileop = new FileOperations(frame);
+        
         String actionCommand = e.getActionCommand();
          System.out.println(actionCommand);
         switch (actionCommand) {
@@ -57,10 +58,10 @@ public class InvoiceListener implements ActionListener , ListSelectionListener{
                 deleteLine();
                 break;
             case "Load Files":
-                loadFiles(null, null);
+                fileop.loadFiles(null, null);
                 break;
             case "Save Data":
-                saveData();
+                fileop.writeFile();
                 break;
             case "newInvoiceOK":
                 newInvoiceOK();
@@ -135,57 +136,7 @@ public class InvoiceListener implements ActionListener , ListSelectionListener{
         }
     }
 
-    public void loadFiles(String headrPath, String linePath) {
-        File headerFile = null;
-        File lineFile = null;
-        if (headrPath == null && linePath == null) {
-            JFileChooser fc = new JFileChooser();
-            int result = fc.showOpenDialog(frame);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                headerFile = fc.getSelectedFile();
-                result = fc.showOpenDialog(frame);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    lineFile = fc.getSelectedFile();
-                }
-            }
-        } else {
-            headerFile = new File(headrPath);
-            lineFile = new File(linePath);
-        }
-
-        if (headerFile != null && lineFile != null) {
-            try {
-                List<String> headerLines = Files.lines(Paths.get(headerFile.getAbsolutePath())).collect(Collectors.toList());
-                List<String> lineLines = Files.lines(Paths.get(lineFile.getAbsolutePath())).collect(Collectors.toList());
-                frame.getInvoices().clear();
-                for (String headerLine : headerLines) {
-                    String[] parts = headerLine.split(",");  // "1,22-11-2020,saad"  ==>  ["1", "22-11-2020", "saad"]
-                    String numString = parts[0];
-                    String dateString = parts[1];
-                    String name = parts[2];
-                    int num = Integer.parseInt(numString);
-                    Date date = SalesInvoiceForm.sdf.parse(dateString);
-                    InvoiceHeader inv = new InvoiceHeader(num, name, date);
-                    frame.getInvoices().add(inv);
-                }
-                System.out.println("Check point");
-                for (String lineLine : lineLines) {
-                    String[] parts = lineLine.split(",");
-                    int num = Integer.parseInt(parts[0]);
-                    String name = parts[1];
-                    double price = Double.parseDouble(parts[2]);
-                    int count = Integer.parseInt(parts[3]);
-                    InvoiceHeader inv = getInvoiceByNum(num);
-                    InvoiceLine line = new InvoiceLine(name, price, count, inv);
-                    inv.getLines().add(line);
-                }
-                System.out.println("Check point");
-                frame.getInvoicesTable().setModel(new HeaderTableModel(frame.getInvoices()));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
+    
 
     private InvoiceHeader getInvoiceByNum(int num) {
         for (InvoiceHeader inv : frame.getInvoices()) {
@@ -194,42 +145,6 @@ public class InvoiceListener implements ActionListener , ListSelectionListener{
             }
         }
         return null;
-    }
-
-    private void saveData() {
-        String invoicesData = "";
-        String linesData = "";
-        for (InvoiceHeader invoice : frame.getInvoices()) {
-            invoicesData += invoice.toCSV();
-            invoicesData += "\n";
-            for (InvoiceLine line : invoice.getLines()) {
-                linesData += line.toCSV();
-                linesData += "\n";
-            }
-        }
-
-        JFileChooser fc = new JFileChooser();
-        int result = fc.showSaveDialog(frame);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File headerFile = fc.getSelectedFile();
-            result = fc.showSaveDialog(frame);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File lineFile = fc.getSelectedFile();
-                try {
-                    FileWriter headerFW = new FileWriter(headerFile);
-                    headerFW.write(invoicesData);
-                    headerFW.flush();
-                    headerFW.close();
-
-                    FileWriter lineFW = new FileWriter(lineFile);
-                    lineFW.write(linesData);
-                    lineFW.flush();
-                    lineFW.close();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Error while saving data", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
     }
 
     private void newInvoiceOK() {

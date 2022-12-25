@@ -6,7 +6,7 @@ package SalesInvoiceGenerator.model;
 
 /**
  *
- * @author saad
+ * @author mokhalid
  */
 public class InvoiceLine {
     private String itemName;
