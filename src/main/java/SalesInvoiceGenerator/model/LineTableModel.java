@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author mokhalid
+ * @author saad
  */
 public class LineTableModel extends AbstractTableModel {
      private String[] columns = {"Item Name", "Item Price", "Count", "Total"};
