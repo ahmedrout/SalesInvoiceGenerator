@@ -16,7 +16,7 @@ public class InvoiceLine {
     
     public InvoiceLine(String itemName ,double itemPrice, int count,InvoiceHeader invoice ){
         this.itemName = itemName;
-        this.itemPrice = this.itemPrice;
+        this.itemPrice = itemPrice;
         this.count = count;
         this.invoice = invoice;
     }
